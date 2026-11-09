@@ -1,6 +1,6 @@
 import torch
 
-def vector_add(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
+def vector_add_ref(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
     return a + b
 
 if __name__ == "__main__":

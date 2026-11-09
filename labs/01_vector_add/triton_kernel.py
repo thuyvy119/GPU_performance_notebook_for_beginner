@@ -4,7 +4,7 @@ Triton vector addition: z = x + y.
 Running example used in note.md and README.md:
 x, y are length-100000 float32 vectors
 BLOCK_SIZE = 1024, grid = ceil(100_000 / 1024) = 98 programs, pid in [0, 97]
-pid 0..96 each handle 1024 elements, only pid 97 handles only 672 (the rest is masked).
+pid 0..96 each handle 1024 elements, only pid 97 handles only 672 (the rest is masked)
 '''
 import torch
 import triton
@@ -41,7 +41,8 @@ def add_kernel(x_ptr, y_ptr, output_ptr, n_elements, BLOCK_SIZE: tl.constexpr):
     x = tl.load(x_ptr + offsets, mask=mask, other=0.0)
     y = tl.load(y_ptr + offsets, mask=mask, other=0.0)
     
-    # compute. 1024 additions happen at once. The last 352 are 0.0 + 0.0 and are thrown away below
+    # Compute. 
+    # 1024 additions happen at once. The last 352 are 0.0 + 0.0 and are thrown away below
     output = x + y
     
     # pid=97: write only the 672 valid results: output[99328] .. output[99999]
@@ -49,7 +50,7 @@ def add_kernel(x_ptr, y_ptr, output_ptr, n_elements, BLOCK_SIZE: tl.constexpr):
     tl.store(output_ptr + offsets, output, mask=mask)
     
 
-def add(x: torch.Tensor, y: torch.Tensor, block_size: int = 1024) -> torch.Tensor:
+def vector_add(x: torch.Tensor, y: torch.Tensor, block_size: int = 1024) -> torch.Tensor:
     assert x.is_cuda and y.is_cuda, "tensors must be on the GPU"
     assert x.shape == y.shape, "x and y must have the same shape"
     
