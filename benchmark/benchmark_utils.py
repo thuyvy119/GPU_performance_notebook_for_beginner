@@ -18,12 +18,12 @@ def gbps(num_bytes, ms):
     return num_bytes/(ms*1e-3)/1e9
 
 def results_dir(op_name):
-    path = RESULTS_DIR
+    path = RESULTS_DIR/op_name
     path.mkdir(parents=True, exist_ok=True)
     return path
 
 def save_csv(rows, path):
-    with open(path, "w", newlines="") as f:
+    with open(path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
@@ -34,7 +34,7 @@ def plot_two_panels(rows, providers, title, path, peak_gbps):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     
-    fig, (ax_t, ax_b) = plt.subplot(1, 2, figsize=(11, 4))
+    fig, (ax_t, ax_b) = plt.subplots(1, 2, figsize=(11, 4))
     for name in providers:
         pts = [r for r in rows if r["provider"] == name]
         sizes = [r["n_elements"] for r in pts]

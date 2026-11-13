@@ -2,8 +2,8 @@ import argparse
 import torch
 
 from benchmark.benchmark_utils import gbps, results_dir, save_csv, time_ms, plot_two_panels
-from pytorch_ref import relu_ref
-from triton_kernel import relu
+from .pytorch_ref import relu_ref
+from .triton_kernel import relu
 
 DTYPES = {"fp32": torch.float32, "fp16": torch.float16, "bf16": torch.bfloat16}
 
@@ -11,7 +11,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dtype", choices=DTYPES, default="fp32")
     parser.add_argument("--min-pow", type=int, default=10, help="smallest size is 2**min_pow")
-    parser.add_argument("--max-pow", type=float, default=None, help="largest size is 2**max_pow")
+    parser.add_argument("--max-pow", type=int, default=27, help="largest size is 2**max_pow")
     parser.add_argument("--peak-bw", type=float, default=None, help="published peak memory bandwidth in GB/s (draws a dashed line)")
     
     args = parser.parse_args()

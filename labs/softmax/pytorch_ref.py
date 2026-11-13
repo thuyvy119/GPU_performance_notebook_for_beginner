@@ -1,6 +1,6 @@
 import torch
 
-def softmax(x: torch.Tensor) -> torch.Tensor:
+def softmax_ref(x: torch.Tensor) -> torch.Tensor:
     return torch.softmax(x, dim=1)
 
 def naive_softmax(x:torch.Tensor) -> torch.Tensor:

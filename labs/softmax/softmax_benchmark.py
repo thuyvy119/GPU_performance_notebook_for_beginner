@@ -7,8 +7,8 @@
 from benchmark.benchmark_utils import (
     gbps, results_dir, save_csv, time_ms, plot_two_panels,
 )
-from pytorch_ref import softmax_ref, naive_softmax
-from triton_kernel import softmax
+from .pytorch_ref import softmax_ref, naive_softmax
+from .triton_kernel import softmax
 import torch
 import argparse
 

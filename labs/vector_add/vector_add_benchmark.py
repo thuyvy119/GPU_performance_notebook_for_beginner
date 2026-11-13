@@ -1,6 +1,6 @@
 from benchmark.benchmark_utils import gbps, results_dir, save_csv, time_ms, plot_two_panels
-from pytorch_ref import vector_add_ref
-from triton_kernel import vector_add
+from .pytorch_ref import vector_add_ref
+from .triton_kernel import vector_add
 import torch
 import argparse
 
@@ -11,7 +11,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dtype", choices=DTYPES, default="fp32")
     parser.add_argument("--min-pow", type=int, default=10, help="smallest size is 2**min_pow")
-    parser.add_argument("--max-pow", type=float, default=None, help="largest size is 2**max_pow")
+    parser.add_argument("--max-pow", type=int, default=24, help="largest size is 2**max_pow")
     parser.add_argument("--peak-bw", type=float, default=None, help="published peak memory bandwidth in GB/s (draws a dashed line)")
     
     args = parser.parse_args()
@@ -33,7 +33,7 @@ def main():
             rows.append({
                 "provider": name, "dtype": args.dtype, "n_elements": n,
                 "logical_bytes": logical_bytes, 
-                "time_ms": time_ms, "time_p20_ms": p20, "time_p80_ms": p80,
+                "time_ms": median, "time_p20_ms": p20, "time_p80_ms": p80,
                 "gbps": gbps(logical_bytes, median),
             })
         del x, y
